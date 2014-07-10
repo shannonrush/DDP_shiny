@@ -1,0 +1,44 @@
+---
+title: "Data Processing"
+author: "Shannon Rush"
+date: "July 10, 2014"
+output: pdf_document
+---
+
+This document details the steps taken to process the Titanic Survival dataset obtained from [the Kaggle Titanic competition]("http://www.kaggle.com/c/titanic-gettingStarted") into the data needed for this Shiny application.
+
+Load the raw data obtained from Kaggle
+```{r load_data}
+    data <- read.csv("train.csv")
+```
+
+Create new dataframe using just columns needed for the Shiny application, with tidier column names
+```{r}
+    new.data <- data.frame(survived=data$Survived,
+                               class=data$Pclass,
+                               gender=data$Sex,
+                               age=data$Age)
+```
+Keep only observations that include data for each selected feature
+```{r}
+    titanic.data <- new.data[complete.cases(new.data),]
+```
+Fractional ages are not necessary for this analysis, round ages to nearest integer
+```{r}
+    titanic.data$age <- round(titanic.data$age)
+```
+Revalue survival factor for easier labeling
+```{r}
+    library(plyr)
+    titanic.data$survived <- as.character(titanic.data$survived)
+    titanic.data$survived <- revalue(titanic.data$survived, c("0"="Did Not Survive","1"="Survived"))
+```
+
+Save as .RData file for easy loading
+```{r}
+    save(titanic.data, file="titanic_data.RData")
+```
+
+
+
+
