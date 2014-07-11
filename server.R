@@ -12,7 +12,7 @@ shinyServer(function(input, output) {
             group_by(survived, gender) %.%
             summarise(counts=n())
         p <- ggplot(data=grouped.data, aes(x=survived, y=counts, fill=gender)) 
-        title <- paste("Survival of Passengers Aged",input$range[1],"to",input$range[2],"in",TitleClass())
+        title <- paste("Survival of",TitleClass(),"Passengers Aged",input$range[1],"to",input$range[2])
         l <- p + xlab("Survival")+ylab("Number of Passengers")+ggtitle(title)
         t <- l + theme(plot.title = element_text(lineheight=40, size=20, face="bold", vjust=1),
                            axis.title = element_text(size=17),
